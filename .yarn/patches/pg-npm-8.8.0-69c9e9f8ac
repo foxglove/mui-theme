@@ -1,0 +1,28 @@
+diff --git a/lib/client.js b/lib/client.js
+index 18238f6fb06ba8f92bacc770a0cae993a3cd1072..6c223508a6b888448f2c98bc3a03affeb797025d 100644
+--- a/lib/client.js
++++ b/lib/client.js
+@@ -297,6 +297,7 @@ class Client extends EventEmitter {
+   _handleErrorWhileConnecting(err) {
+     if (this._connectionError) {
+       // TODO(bmc): this is swallowing errors - we shouldn't do this
++      console.warn("[pg.Client._handleErrorWhileConnecting] swallowing error", err);
+       return
+     }
+     this._connectionError = true
+@@ -311,6 +312,7 @@ class Client extends EventEmitter {
+   // this means the socket is dead - do a hard abort of all queries and emit
+   // the socket error on the client as well
+   _handleErrorEvent(err) {
++    console.warn("[pg.Client._handleErrorEvent] connecting:", this._connecting, err);
+     if (this._connecting) {
+       return this._handleErrorWhileConnecting(err)
+     }
+@@ -321,6 +323,7 @@ class Client extends EventEmitter {
+ 
+   // handle error messages from the postgres backend
+   _handleErrorMessage(msg) {
++    console.debug("[pg.Client._handleErrorMessage] connecting:", this._connecting, msg);
+     if (this._connecting) {
+       return this._handleErrorWhileConnecting(msg)
+     }
